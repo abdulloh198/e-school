@@ -43,12 +43,12 @@ class DailyViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def ratings(self, request):
-        queryset = Daily.objects.annotate(quarter=models.Avg('daily__rating'))
+        queryset = Daily.objects.annotate(quarter=models.Avg('rating'))
 
         if queryset.count() == 0:
             return Response({"message": "No ratings found"}, status=404)
 
-        serializer = UserRatingSerializer(queryset, many=True)
+        serializer = DailySerializer(queryset, many=True)
         return Response(serializer.data)
 
 
