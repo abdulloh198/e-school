@@ -1,12 +1,23 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-# Create your models here.
+
+class Teachers(models.Model):
+    tch_id = models.IntegerField(validators=[MinValueValidator(1000), MaxValueValidator(9999)])
+    name = models.CharField(max_length=123)
+    lt_name = models.CharField(max_length=123)
+    job = models.CharField(max_length=123)
+
+    def __str__(self):
+        return self.name
+
 
 class Users(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     clas = models.TextField(max_length=10)
+    teacher = models.ForeignKey(Teachers, null=True, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.first_name
@@ -16,6 +27,7 @@ class Users(models.Model):
 class Daily(models.Model):
     user = models.ForeignKey(Users, null=True   , on_delete=models.CASCADE)
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
 
     def __str__(self):
         return f"{Daily.user}'s daily"
@@ -30,3 +42,4 @@ class Thoughts(models.Model):
 
     def __str__(self):
         return f"by {Thoughts.owner} to {Thoughts.student}"
+

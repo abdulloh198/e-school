@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import *
 
 
+class TeacherSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Teachers
+        fields = "__all__"
+
+
 class UserRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
