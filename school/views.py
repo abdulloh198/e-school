@@ -28,7 +28,7 @@ class TeacherViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        related_teachers = Users.objects.filter(Users=instance.user).exclude(id=instance.id)[:5]
+        related_teachers = Teachers.objects.filter(Teachers=instance.teacher).exclude(id=instance.id)[:5]
         related_serializer = TeacherSerializer(related_teachers, many=True)
         return Response({
             'teacher': serializer.data,
