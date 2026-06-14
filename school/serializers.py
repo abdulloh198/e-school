@@ -2,30 +2,38 @@ from rest_framework import serializers
 from .models import *
 
 
+class ClasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Class
+        fields = "__all__"
+
+
 class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Teachers
+        model = Teacher
         fields = "__all__"
 
 
-class UserRatingSerializer(serializers.ModelSerializer):
+class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Users
-        fields = ['id','first_name', 'last_name', 'clas']
+        model = Student
+        fields = "__all__"
 
 
-class DailySerializer(serializers.ModelSerializer):
+class GradebookSerializer(serializers.ModelSerializer):
     quarter = serializers.FloatField(read_only=True, required=False)
 
     class Meta:
-        model = Daily
-        fields = ['user', 'rating', 'quarter']
+        model = Gradebook
+        fields = ['student', 'rating', 'quarter']
 
 
-class ThoughtSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Thoughts
+        model = Comment
         fields = "__all__"
+
