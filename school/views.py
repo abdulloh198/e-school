@@ -75,6 +75,15 @@ class StudentViewSet(viewsets.ModelViewSet):
             self.queryset = self.queryset.filter(uquvchi=student)
         return super().list(request, *args, **kwargs)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        related_users = Student.objects.filter(student=instance.user).exclude(id=instance.id)[:5]
+        related_serializer = StudentSerializer(related_users, many=True)
+        return Response({
+            'student': serializer.data,
+            'related_students': related_serializer.data
+        })
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -90,6 +99,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         })
 
 
+
 class GradebookViewSet(viewsets.ModelViewSet):
     queryset = Gradebook.objects.all()
     serializer_class = GradebookSerializer
@@ -100,13 +110,17 @@ class GradebookViewSet(viewsets.ModelViewSet):
 
         return Response(queryset1)
 
+
     @action(detail=False, methods=['get'])
     def top_students(self, request):
         queryset1 = Gradebook.objects.values('student_id').annotate(average_rating=models.Avg('rating')).order_by('-average_rating')[:5]
         return Response(queryset1)
+    
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+
 
 
